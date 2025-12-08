@@ -1,5 +1,9 @@
 "use client";
 import React, { useState } from "react";
+
+import { useRouter } from "next/navigation";
+
+
 import {
   GraduationCap,
   Users,
@@ -13,7 +17,9 @@ import {
 } from "lucide-react";
 
 export default function HomePage() {
+  const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+   const [selectedDepartment, setSelectedDepartment] = useState(null);
 
   const features = [
     {
@@ -55,21 +61,81 @@ export default function HomePage() {
   ];
 
   const departments = [
-    { name: "Engineering", color: "bg-blue-600 hover:bg-blue-700" },
-    { name: "Medical Sciences", color: "bg-red-600 hover:bg-red-700" },
+    { 
+      name: "Engineering", 
+      color: "bg-blue-600 hover:bg-blue-700",
+      dean: "Dr. Rajesh Kumar",
+      programs: 5,
+      students: 1200
+    },
+    { 
+      name: "Medical Sciences", 
+      color: "bg-red-600 hover:bg-red-700",
+      dean: "Dr. Sunita Sharma",
+      programs: 3,
+      students: 800
+    },
     {
       name: "Business Administration",
       color: "bg-green-600 hover:bg-green-700",
+      dean: "Prof. Anil Thapa",
+      programs: 4,
+      students: 1500
     },
-    { name: "Arts & Humanities", color: "bg-purple-600 hover:bg-purple-700" },
-    { name: "Natural Sciences", color: "bg-orange-600 hover:bg-orange-700" },
-    { name: "Law", color: "bg-indigo-600 hover:bg-indigo-700" },
-    { name: "Education", color: "bg-pink-600 hover:bg-pink-700" },
-    { name: "Computer Science", color: "bg-cyan-600 hover:bg-cyan-700" },
+    { 
+      name: "Arts & Humanities", 
+      color: "bg-purple-600 hover:bg-purple-700",
+      dean: "Dr. Maya Gurung",
+      programs: 6,
+      students: 950
+    },
+    { 
+      name: "Natural Sciences", 
+      color: "bg-orange-600 hover:bg-orange-700",
+      dean: "Dr. Prakash Adhikari",
+      programs: 4,
+      students: 700
+    },
+    { 
+      name: "Law", 
+      color: "bg-indigo-600 hover:bg-indigo-700",
+      dean: "Adv. Binod Karki",
+      programs: 2,
+      students: 600
+    },
+    { 
+      name: "Education", 
+      color: "bg-pink-600 hover:bg-pink-700",
+      dean: "Dr. Shanti Devi",
+      programs: 3,
+      students: 850
+    },
+    { 
+      name: "Computer Science", 
+      color: "bg-cyan-600 hover:bg-cyan-700",
+      dean: "Dr. Bikram Shrestha",
+      programs: 4,
+      students: 1100
+    },
   ];
+  //Redirect functions
+   const handleLogin = () => {
+  router.push("/login"); // For login
+  };
+
+  const handleRegister = () => {
+   router.push("/register"); // For registration
+  };
+   const handleDepartmentClick = (dept) => {
+    setSelectedDepartment(dept);
+  };
+
+  const closeDepartmentModal = () => {
+    setSelectedDepartment(null);
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100">
       {/* Navigation */}
       <nav className="bg-white shadow-md sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -107,10 +173,16 @@ export default function HomePage() {
             </div>
 
             <div className="hidden md:flex space-x-4">
-              <button className="px-4 py-2 text-blue-600 hover:text-blue-700 transition cursor-pointer">
+            <button
+                onClick={handleLogin}
+                className="px-4 py-2 text-blue-600 hover:text-blue-700 transition cursor-pointer"
+              >
                 Login
               </button>
-              <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition cursor-pointer">
+              <button
+                onClick={handleRegister}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition cursor-pointer"
+              >
                 Get Started
               </button>
             </div>
@@ -156,12 +228,22 @@ export default function HomePage() {
                 >
                   Contact
                 </a>
-                <button className="px-4 py-2 text-blue-600 border border-blue-600 rounded-lg">
-                  Login
-                </button>
-                <button className="px-4 py-2 bg-blue-600 text-white rounded-lg">
-                  Get Started
-                </button>
+                 <button 
+  onClick={handleLogin}
+  className="px-4 py-2 text-blue-600 border border-blue-600 rounded-lg flex items-center justify-center gap-2"
+>
+  
+  Login
+</button>
+
+<button 
+  onClick={handleRegister}
+  className="px-4 py-2 bg-blue-600 text-white rounded-lg flex items-center justify-center gap-2"
+>
+  
+  Register
+</button>
+
               </div>
             </div>
           )}
@@ -211,17 +293,17 @@ export default function HomePage() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-xl">
+            <div className="bg-linear-to-br from-blue-50 to-blue-100 p-8 rounded-xl">
               <div className="text-4xl font-bold text-blue-600 mb-2">
                 10,000+
               </div>
               <div className="text-gray-700 font-semibold">Active Students</div>
             </div>
-            <div className="bg-gradient-to-br from-green-50 to-green-100 p-8 rounded-xl">
+            <div className="bg-linear-to-br from-green-50 to-green-100 p-8 rounded-xl">
               <div className="text-4xl font-bold text-green-600 mb-2">500+</div>
               <div className="text-gray-700 font-semibold">Faculty Members</div>
             </div>
-            <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-8 rounded-xl">
+            <div className="bg-linear-to-br from-purple-50 to-purple-100 p-8 rounded-xl">
               <div className="text-4xl font-bold text-purple-600 mb-2">50+</div>
               <div className="text-gray-700 font-semibold">
                 Programs Offered
@@ -234,7 +316,7 @@ export default function HomePage() {
       {/* Features Section */}
       <section
         id="features"
-        className="py-20 bg-gradient-to-br from-slate-50 to-slate-100"
+        className="py-20 bg-linear-to-br from-slate-50 to-slate-100"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -264,22 +346,20 @@ export default function HomePage() {
       </section>
 
       {/* Departments Portal Section */}
+      
       <section id="departments" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Department Portals
-            </h2>
-            <p className="text-xl text-gray-600">
-              Access your department's dedicated portal
-            </p>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Department Portals</h2>
+            <p className="text-xl text-gray-600">Explore our departments and their programs</p>
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {departments.map((dept, index) => (
               <button
                 key={index}
-                className={`${dept.color} text-white p-6 rounded-xl font-semibold text-lg transition transform hover:scale-105 shadow-lg`}
+                onClick={() => handleDepartmentClick(dept)}
+                className={`${dept.color} text-white p-6 rounded-xl font-semibold text-lg transition transform hover:scale-105 shadow-lg cursor-pointer`}
               >
                 {dept.name}
               </button>
@@ -287,6 +367,50 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {selectedDepartment && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-xl max-w-2xl w-full p-8 relative max-h-screen overflow-y-auto">
+            <button onClick={closeDepartmentModal} className="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+              <X className="w-6 h-6" />
+            </button>
+            
+            <h3 className="text-3xl font-bold text-gray-900 mb-4">{selectedDepartment.name}</h3>
+            
+            <div className="space-y-4">
+              <div className="flex items-center gap-2">
+                <Users className="w-5 h-5 text-blue-600" />
+                <span className="text-gray-700"><strong>Dean:</strong> {selectedDepartment.dean}</span>
+              </div>
+              
+              <div className="flex items-center gap-2">
+                <BookOpen className="w-5 h-5 text-green-600" />
+                <span className="text-gray-700"><strong>Programs:</strong> {selectedDepartment.programs} active programs</span>
+              </div>
+              
+              <div className="flex items-center gap-2">
+                <GraduationCap className="w-5 h-5 text-purple-600" />
+                <span className="text-gray-700"><strong>Students:</strong> {selectedDepartment.students} enrolled</span>
+              </div>
+
+              <div className="mt-6 p-4 bg-blue-50 rounded-lg">
+                <p className="text-gray-700">
+                  The {selectedDepartment.name} department offers comprehensive programs designed to prepare students for successful careers. Our dedicated faculty and modern facilities ensure excellence.
+                </p>
+              </div>
+
+              <div className="mt-6 flex gap-4">
+                <button className="flex-1 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                  View Programs
+                </button>
+                <button className="flex-1 px-6 py-3 border-2 border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 transition">
+                  Contact Department
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Footer */}
       <footer id="contact" className="bg-gray-900 text-white py-12">
@@ -357,10 +481,10 @@ export default function HomePage() {
             <div>
               <h4 className="text-lg font-semibold mb-4">Contact</h4>
               <ul className="space-y-2 text-gray-400">
-                <li>Email: info@uniportal.edu</li>
-                <li>Phone: +1 (555) 123-4567</li>
-                <li>Address: 123 University Ave</li>
-                <li>City, State 12345</li>
+                <li>Email: info@uniportal.edu.np</li>
+                <li>Phone: +977 (11) 490-497</li>
+                <li>Address: Dhulikhel, Kavre</li>
+                <li>Kathmandu University</li>
               </ul>
             </div>
           </div>
