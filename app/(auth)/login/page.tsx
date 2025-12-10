@@ -12,6 +12,8 @@ import { Label } from "@/components/forms/label";
 import { LoginButtonGoogle } from "@/components/forms/SignUpButtonGoogle";
 import Link from "next/link";
 import { useState } from "react";
+import { supabase } from "@/lib/supabaseClient";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -19,7 +21,53 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [userType, setUserType] = useState("student");
-  const handleSubmit = () => {};
+  const router = useRouter();
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    try {
+      const { data, error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (signInError) {
+        if (signInError.message.includes("Email not confirmed")) {
+          setError("Please verify your email before logging in. Check your inbox (and spam folder).");
+        } else if (signInError.message.includes("Invalid login credentials")) {
+          setError("Invalid email or password. Please try again.");
+        } else {
+          setError(signInError.message || "Login failed");
+        }
+        setLoading(false);
+        return;
+      }
+
+      // Check if user role matches selected userType
+      const userRole = data.user?.user_metadata?.role;
+      if (userRole && userRole !== userType) {
+        setError(`This account is registered as a ${userRole}. Please select the correct account type.`);
+        await supabase.auth.signOut();
+        setLoading(false);
+        return;
+      }
+
+      // Redirect based on role
+      if (userRole === "student") {
+        router.push("/dashboard/student");
+      } else if (userRole === "teacher") {
+        router.push("/dashboard/teacher");
+      } else {
+        router.push("/dashboard/student");
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unknown error");
+      setLoading(false);
+    }
+  };
 
   return (
     <Card className="w-full max-w-md">
